@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../mixins/validation_mixin.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -7,7 +8,7 @@ class LoginScreen extends StatefulWidget {
   }
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> with ValidationMixin {
   final formKey = GlobalKey<FormState>();
 
   String email = '';
@@ -37,7 +38,7 @@ class LoginScreenState extends State<LoginScreen> {
         hintText: "you@example.com",
       ),
       keyboardType: TextInputType.emailAddress,
-      validator: validateEmailField,
+      validator: validateEmail,
       onSaved: saveEmailField,
     );
   }
@@ -49,7 +50,7 @@ class LoginScreenState extends State<LoginScreen> {
         hintText: "type your password here",
       ),
       obscureText: false,
-      validator: validatePasswordField,
+      validator: validatePassword,
       onSaved: savePasswordField,
     );
   }
@@ -67,20 +68,6 @@ class LoginScreenState extends State<LoginScreen> {
       formKey.currentState.save();
       print('Time to POST $email and $password to my API!');
     }
-  }
-
-  String validateEmailField(String value) {
-    if (!value.contains('@')) {
-      return 'please enter a valid email';
-    }
-    return null;
-  }
-
-  String validatePasswordField(String value) {
-    if (value.length < 4) {
-      return 'password must be at least 4 characters';
-    }
-    return null;
   }
 
   void saveEmailField(String value) {
